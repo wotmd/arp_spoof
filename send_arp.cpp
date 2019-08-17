@@ -171,7 +171,7 @@ void make_arp_reply(ARPpacket* packet, u_char* sender_mac, u_char* sender_ip, u_
         packet->arp_header.target_mac[i]=target_mac[i];
 }
 
-void next_arp_reqPcap(pcap_t* handle, u_char* arp_packet)
+void next_packet(pcap_t* handle, u_char* next_packet)
 {
     while(true){
       struct pcap_pkthdr* header;
@@ -181,17 +181,6 @@ void next_arp_reqPcap(pcap_t* handle, u_char* arp_packet)
       if (res == -1 || res == -2) break;
       //printf("%u bytes captured\n", header->caplen);
 
-      const EthernetHeader* ether_header = reinterpret_cast<const EthernetHeader*>(packet);
-
-      // type 0x0806 is ARP
-      if(ether_header->type == my_ntohs(0x0806)){
-          packet += sizeof(EthernetHeader);   // packet pointer move, EthernetHeader is 14 byte
-          const ARPHeader* arp_header = reinterpret_cast<const ARPHeader*>(packet);
-          // opcode 0x01 is reply
-          if(arp_header->opcode == my_ntohs(0x01)){
-              memcpy(arp_packet, packet, header->caplen - sizeof(EthernetHeader));
-              return ;
-          }
-      }
+      memcpy(next_packet, packet, header->caplen);
     }
 }

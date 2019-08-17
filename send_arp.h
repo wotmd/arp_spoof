@@ -19,6 +19,6 @@ void GetGatewayForInterface(const char* interface, u_char* gateway_ip);
 void findMacAddress(pcap_t* handle, ARPpacket* arp_packet, u_char* target_mac);
 void make_arp_request(ARPpacket* packet, u_char* sender_mac, u_char* sender_ip, u_char* target_ip);
 void make_arp_reply(ARPpacket* packet, u_char* sender_mac, u_char* sender_ip, u_char* target_mac, u_char* target_ip, u_char* gateway_ip);
-void next_arp_reqPcap(pcap_t* handle, u_char* arp_packet);
+void next_packet(pcap_t* handle, u_char* arp_packet);
 
 #endif // SEND_ARP_H
